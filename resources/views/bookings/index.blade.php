@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center">
-        <h1>Bookings</h1>
-        @if(Auth::user()->role === 'admin')
-            <a href="{{ route('bookings.create') }}" class="btn btn-primary">Create Booking</a>
-        @endif
-    </div>
+    <h1>Bookings</h1>
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
+
+    @if(Auth::user()->role === 'admin')
+        <a href="{{ route('bookings.create') }}" class="btn btn-primary">Create Booking</a>
+    @endif
+
     <table class="table">
         <thead>
             <tr>
@@ -30,7 +30,7 @@
                     <td>{{ $booking->approver->name }}</td>
                     <td>{{ $booking->status }}</td>
                     <td>
-                        @if(Auth::user()->role === 'approver' && $booking->status === 'pending')
+                        @if(Auth::user()->role === 'approver' && $booking->status === 'pending' && $booking->approver_id === Auth::id())
                             <form action="{{ route('bookings.approve', $booking->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 <button type="submit" class="btn btn-success">Approve</button>
