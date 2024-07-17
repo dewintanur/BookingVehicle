@@ -20,6 +20,14 @@
                 @endforeach
             </select>
         </div>
+        <div class="mb-3">
+            <label for="driver_id" class="form-label">Select Driver</label>
+            <select class="form-control" id="driver_id" name="driver_id" required>
+                @foreach ($drivers as $driver)
+                    <option value="{{ $driver->id }}">{{ $driver->name }}</option>
+                @endforeach
+            </select>
+        </div>
         <button type="submit" class="btn btn-primary">Create Booking</button>
     </form>
 @endsection

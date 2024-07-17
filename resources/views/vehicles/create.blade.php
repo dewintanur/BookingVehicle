@@ -1,3 +1,4 @@
+<!-- resources/views/vehicles/create.blade.php -->
 @extends('layouts.app')
 
 @section('content')
@@ -22,6 +23,14 @@
                 <option value="1">Yes</option>
                 <option value="0">No</option>
             </select>
+        </div>
+        <div class="mb-3">
+            <label for="BBM" class="form-label">Fuel Consumption (BBM)</label>
+            <input type="number" class="form-control" id="BBM" name="BBM">
+        </div>
+        <div class="mb-3">
+            <label for="service_schedule" class="form-label">Service Schedule</label>
+            <input type="date" class="form-control" id="service_schedule" name="service_schedule">
         </div>
         <button type="submit" class="btn btn-primary">Create</button>
     </form>

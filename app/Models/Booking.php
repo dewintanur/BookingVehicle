@@ -12,7 +12,13 @@ class Booking extends Model
         'user_id',
         'vehicle_id',
         'approver_id',
+        'driver_id', // Tambahkan kolom driver_id
         'status',
+        'approved_at',
+        'final_approved_at',
+        'rejected_at',
+        'approval_level',
+
     ];
 
     // Relasi ke model Vehicle
@@ -32,4 +38,9 @@ class Booking extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function driver()
+    {
+        return $this->belongsTo(Driver::class);
+    }
+
 }
