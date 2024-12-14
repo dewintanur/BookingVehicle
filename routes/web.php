@@ -3,31 +3,23 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\VehicleController;
-use App\Http\Middleware\CheckRole;
-
+use App\Http\Controllers\DashboardController;
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('bookings/export', [BookingController::class, 'export'])->name('bookings.export');
+
 
 Route::middleware(['auth'])->group(function () {
-    // Rute untuk admin
-    Route::middleware([CheckRole::class . ':admin'])->group(function () {
-        Route::resource('vehicles', VehicleController::class);
-        Route::get('bookings', [BookingController::class, 'index'])->name('bookings.index');
-        Route::get('bookings/create', [BookingController::class, 'create'])->name('bookings.create');
-        Route::post('bookings', [BookingController::class, 'store'])->name('bookings.store');
-    });
+    Route::resource('vehicles', VehicleController::class);
+    Route::resource('bookings', BookingController::class);
+    Route::post('bookings/{booking}/approve', [BookingController::class, 'approve'])->name('bookings.approve');
+    Route::post('bookings/{booking}/final-approve', [BookingController::class, 'finalApprove'])->name('bookings.final_approve');
+    Route::post('bookings/{booking}/reject', [BookingController::class, 'reject'])->name('bookings.reject');
 
-    // Rute untuk approver
-    Route::middleware([CheckRole::class . ':approver'])->group(function () {
-        Route::get('booking', [BookingController::class, 'show'])->name('bookings.show');
-        Route::post('bookings/{booking}/approve', [BookingController::class, 'approve'])->name('bookings.approve'); // Menambahkan route untuk approve booking
-
-    });
 });
 
 require __DIR__.'/auth.php';
+

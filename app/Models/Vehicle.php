@@ -15,8 +15,22 @@ class Vehicle extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 
-        'type', 
+        'name',
+        'type',
         'is_company_owned',
+        'BBM', // konsumsi BBM
+        'service_schedule', // jadwal service
+        'usage_history',
+
     ];
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+    public function getUsageHistoryAttribute()
+    {
+        $finalApprovedCount = $this->bookings()->where('status', 'final_approved')->count();
+
+        return   $finalApprovedCount;
+    }
 }
